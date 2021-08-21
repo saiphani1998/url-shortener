@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    <div class="fluid text-center">
+      <nav class="navbar navbar-dark bg-primary text-center">
+        <!-- Navbar content -->
+        <div class="container text-center">
+          <a class="navbar-brand" href="#">URL Shortener</a>
+        </div>
+      </nav>
+    </div>
+    <div class="container">
+      <% if (message && message.length > 0) { %>
+      <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+      <form action="/shorten" method="POST" class="my-4 form-inline row">
+        <label for="fullUrl" class="sr-only">URL</label>
+        <input
+          required
+          placeholder="URL"
+          type="url"
+          name="fullUrl"
+          class="form-control mr-2 ml-2 col"
+          id="fullUrl"
+          value="<%= prevData && prevData.fullUrl.length > 0 ? prevData.fullUrl[0] : ''%>"
+        />
+        <div class="w-100 d-md-none mt-2 d-xs-block"></div>
+        <input
+          placeholder="Slug (optional)"
+          type="text"
+          name="slug"
+          class="form-control mr-2 ml-2 col"
+          id="slug"
+          value="<%= prevData && prevData.slug.length> 0 ? prevData.slug[0] : ''%>"
+        />
+        <button class="btn btn-success mr-2 font-weight-bold" type="submit">
+          <ion-icon name="link-sharp"></ion-icon> <span>Shorten</span>
+        </button>
+      </form>
+
+      <div class="row justify-content-center">
+        <div class="col table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="table-primary">
+              <tr>
+                <th>Full URL</th>
+                <th>Slug</th>
+                <th>Clicks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% shortUrls.forEach(shortUrl => {%>
+              <tr>
+                <td>
+                  <a href="<%=shortUrl.fullUrl %>"><%=shortUrl.fullUrl %></a>
+                </td>
+                <td>
+                  <a href="<%=shortUrl.shortUrl %>"><%=shortUrl.shortUrl %></a>
+                </td>
+                <td><%=shortUrl.clicks %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div
+        class="
+          footer
+          fixed-bottom
+          text-center
+          bg-dark
+          text-light
+          p-2
+          font-weight-bold
+        "
+      >
+        <span class="sr-only">
+          This site is made with passion by Sai Phani
+        </span>
+        <span>
+          Made with ❤️ by
+          <a
+            style="color: #03a9f4; text-decoration: underline"
+            href="https://www.linkedin.com/in/saiphani1998/"
+          >
+            Phani
+          </a>
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
