@@ -6,9 +6,8 @@ const session = require("express-session");
 const flush = require("connect-flash");
 
 const shortId = require("shortid");
-const { request, response } = require("express");
 
-mongoose.connect("mongodb://127.0.0.1:27017/urlShortener", {
+mongoose.connect(process.env.db || "mongodb://127.0.0.1:27017/urlShortener", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
