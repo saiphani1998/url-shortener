@@ -19,29 +19,35 @@ app.use(
 );
 app.use(flush());
 
-app.get("/", async (req, res) => {
-  let shortUrls;
+mongoose.connect(
+  process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/urlShortener",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => {
+    app.get("/", handleGetRequest);
+    app.post("/shorten", handleShortenRequest);
+    app.get("/:slug", handleSlugRequest);
+  }
+);
+
+const handleGetRequest = async (req, res) => {
+  let shortUrls, message;
   try {
-    await mongoose.connect(
-      process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/urlShortener",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
-    shortUrls = await ShortUrl.find();
+    shortUrls = await getAllShortUrls();
   } catch (err) {
-    console.log("error");
     console.error(err);
+    message = "Something went wrong!";
   }
   res.render("index", {
     shortUrls: shortUrls || [],
-    message: req.flash("message"),
+    message: message || req.flash("message"),
     prevData: { fullUrl: req.flash("fullUrl"), slug: req.flash("slug") },
   });
-});
+};
 
-app.post("/shorten", async (req, res) => {
+const handleShortenRequest = async (req, res) => {
   if (!req.body.fullUrl) {
     req.flash("message", "fullUrl is Required!");
     res.redirect("/");
@@ -54,27 +60,50 @@ app.post("/shorten", async (req, res) => {
     return;
   }
 
-  let slug = req.body.slug;
-  if (slug) {
-    let shortUrl = await ShortUrl.findOne({ shortUrl: slug });
-    if (shortUrl != null) {
-      req.flash("message", "Slug already Exists");
-      req.flash("fullUrl", req.body.fullUrl);
-      req.flash("slug", slug);
-      res.redirect("/");
-      return;
+  try {
+    let slug = req.body.slug;
+    if (slug) {
+      let shortUrl = await getShortUrlBySlug({ slug });
+      if (shortUrl != null) {
+        req.flash("message", "Slug already Exists");
+        req.flash("fullUrl", req.body.fullUrl);
+        req.flash("slug", slug);
+        res.redirect("/");
+        return;
+      }
     }
+
+    if (!slug) {
+      slug = await generateSlug();
+    }
+
+    await createShortUrl({ fullUrl: req.body.fullUrl, slug });
+    res.redirect("/");
+  } catch (err) {
+    console.log("error");
+    console.error(err);
+    res.sendStatus(500);
   }
+};
 
-  if (!slug) {
-    slug = await generateSlug();
+const handleSlugRequest = async (req, res) => {
+  try {
+    const shortUrl = await getShortUrlBySlug({ slug: req.params.slug });
+    if (shortUrl == null) {
+      return res.sendStatus(404);
+    }
+
+    shortUrl.clicks++;
+    shortUrl.save();
+
+    res.redirect(shortUrl.fullUrl);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
+};
 
-  await createShortUrl(req.body.fullUrl, slug);
-  res.redirect("/");
-});
-
-function validURL(str) {
+const validURL = (str) => {
   var pattern = new RegExp(
     "^(https?:\\/\\/)" + // protocol
       "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
@@ -85,33 +114,31 @@ function validURL(str) {
     "i"
   ); // fragment locator
   return !!pattern.test(str);
-}
+};
 
 const generateSlug = async () => {
   let slug = null,
     shortUrl = null;
   do {
     slug = shortId.generate();
-    shortUrl = await ShortUrl.findOne({ shortUrl: slug });
+    shortUrl = await getShortUrlBySlug({ slug });
   } while (shortUrl != null);
 
   return slug;
 };
 
-const createShortUrl = async (fullUrl, slug) => {
-  await ShortUrl.create({ fullUrl: fullUrl, shortUrl: slug });
+const getAllShortUrls = async () => {
+  let shortUrls = await ShortUrl.find();
+  return shortUrls;
 };
 
-app.get("/:slug", async (req, res) => {
-  const shortUrl = await ShortUrl.findOne({ shortUrl: req.params.slug });
-  if (shortUrl == null) {
-    return res.sendStatus(404);
-  }
+const getShortUrlBySlug = async ({ slug }) => {
+  let shortUrl = await ShortUrl.findOne({ shortUrl: slug });
+  return shortUrl;
+};
 
-  shortUrl.clicks++;
-  shortUrl.save();
-
-  res.redirect(shortUrl.fullUrl);
-});
+const createShortUrl = async ({ fullUrl, slug }) => {
+  await ShortUrl.create({ fullUrl: fullUrl, shortUrl: slug });
+};
 
 app.listen(process.env.PORT || 5000);
