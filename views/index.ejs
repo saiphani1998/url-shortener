@@ -70,10 +70,14 @@
               <% shortUrls.forEach(shortUrl => {%>
               <tr>
                 <td>
-                  <a href="<%=shortUrl.fullUrl %>"><%=shortUrl.fullUrl %></a>
+                  <a href="<%=shortUrl.fullUrl %>" target="_blank"
+                    ><%=shortUrl.fullUrl %></a
+                  >
                 </td>
                 <td>
-                  <a href="<%=shortUrl.shortUrl %>"><%=shortUrl.shortUrl %></a>
+                  <a href="<%=shortUrl.shortUrl %>" target="_blank"
+                    ><%=shortUrl.shortUrl %></a
+                  >
                 </td>
                 <td><%=shortUrl.clicks %></td>
               </tr>
@@ -94,7 +98,7 @@
         "
       >
         <span class="sr-only">
-          This site is made with passion by Sai Phani
+          This site is built with passion by Sai Phani
         </span>
         <span>
           Made with ❤️ and passion by
