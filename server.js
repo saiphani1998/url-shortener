@@ -20,7 +20,6 @@ app.use(
 app.use(flush());
 
 app.get("/", async (req, res) => {
-  console.log("request recieved");
   let shortUrls;
   try {
     await mongoose.connect(
