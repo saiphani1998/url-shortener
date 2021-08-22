@@ -35,7 +35,7 @@ app.get("/", async (req, res) => {
     console.error(err);
   }
   res.render("index", {
-    shortUrls: shortUrls,
+    shortUrls: shortUrls || [],
     message: req.flash("message"),
     prevData: { fullUrl: req.flash("fullUrl"), slug: req.flash("slug") },
   });
