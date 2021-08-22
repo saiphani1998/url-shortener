@@ -80,7 +80,6 @@ const handleShortenRequest = async (req, res) => {
     await createShortUrl({ fullUrl: req.body.fullUrl, slug });
     res.redirect("/");
   } catch (err) {
-    console.log("error");
     console.error(err);
     res.sendStatus(500);
   }
