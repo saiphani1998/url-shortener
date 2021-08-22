@@ -7,10 +7,13 @@ const flush = require("connect-flash");
 
 const shortId = require("shortid");
 
-mongoose.connect(process.env.db || "mongodb://127.0.0.1:27017/urlShortener", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/urlShortener",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
