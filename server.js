@@ -28,7 +28,14 @@ app.use(
 app.use(flush());
 
 app.get("/", async (req, res) => {
-  const shortUrls = await ShortUrl.find();
+  console.log("request recieved");
+  let shortUrls;
+  try {
+    shortUrls = await ShortUrl.find();
+  } catch (err) {
+    console.log("error");
+    console.error(err);
+  }
   res.render("index", {
     shortUrls: shortUrls,
     message: req.flash("message"),
