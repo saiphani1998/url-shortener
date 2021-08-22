@@ -65,7 +65,6 @@ app.post("/shorten", async (req, res) => {
     slug = await generateSlug();
   }
 
-  console.log(slug);
   await createShortUrl(req.body.fullUrl, slug);
   res.redirect("/");
 });
