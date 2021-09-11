@@ -60,6 +60,18 @@ const handleShortenRequest = async (req, res) => {
     return;
   }
 
+  console.log(req.body.slug);
+  if (!validSlug(req.body.slug)) {
+    req.flash(
+      "message",
+      "Slug should contain only alphanumeric and _@./+- characters"
+    );
+    req.flash("fullUrl", req.body.fullUrl);
+    req.flash("slug", req.body.slug);
+    res.redirect("/");
+    return;
+  }
+
   try {
     let slug = req.body.slug;
     if (slug) {
@@ -86,6 +98,7 @@ const handleShortenRequest = async (req, res) => {
 };
 
 const handleSlugRequest = async (req, res) => {
+  console.log(req.params.slug);
   try {
     const shortUrl = await getShortUrlBySlug({ slug: req.params.slug });
     if (shortUrl == null) {
@@ -112,6 +125,12 @@ const validURL = (str) => {
       "(\\#[-a-z\\d_]*)?$",
     "i"
   ); // fragment locator
+  return !!pattern.test(str);
+};
+
+const validSlug = (str) => {
+  var pattern = new RegExp("^[A-Za-z0-9_@./+-]*$");
+  console.log("Validity: ", !!pattern.test(str));
   return !!pattern.test(str);
 };
 
