@@ -95,7 +95,7 @@ const handleShortenRequest = async (req, res) => {
     });
 
     res.render("success", {
-      shortUrl: createdShortUrl.shortUrl,
+      shortUrl: (process.env.hostURL || "") + createdShortUrl.shortUrl,
     });
   } catch (err) {
     console.error(err);
