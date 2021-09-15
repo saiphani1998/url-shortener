@@ -89,8 +89,14 @@ const handleShortenRequest = async (req, res) => {
       slug = await generateSlug();
     }
 
-    await createShortUrl({ fullUrl: req.body.fullUrl, slug });
-    res.redirect("/");
+    let createdShortUrl = await createShortUrl({
+      fullUrl: req.body.fullUrl,
+      slug,
+    });
+
+    res.render("success", {
+      shortUrl: createdShortUrl.shortUrl,
+    });
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
@@ -98,7 +104,6 @@ const handleShortenRequest = async (req, res) => {
 };
 
 const handleSlugRequest = async (req, res) => {
-  console.log(req.params.slug);
   try {
     const shortUrl = await getShortUrlBySlug({ slug: req.params.slug });
     if (shortUrl == null) {
@@ -130,7 +135,6 @@ const validURL = (str) => {
 
 const validSlug = (str) => {
   var pattern = new RegExp("^[A-Za-z0-9_@./+-]*$");
-  console.log("Validity: ", !!pattern.test(str));
   return !!pattern.test(str);
 };
 
@@ -156,7 +160,7 @@ const getShortUrlBySlug = async ({ slug }) => {
 };
 
 const createShortUrl = async ({ fullUrl, slug }) => {
-  await ShortUrl.create({ fullUrl: fullUrl, shortUrl: slug });
+  return await ShortUrl.create({ fullUrl: fullUrl, shortUrl: slug });
 };
 
 app.listen(process.env.PORT || 5000);
