@@ -34,14 +34,14 @@ mongoose.connect(
 
 const handleGetRequest = async (req, res) => {
   let shortUrls, message;
-  try {
-    shortUrls = await getAllShortUrls();
-  } catch (err) {
-    console.error(err);
-    message = "Something went wrong!";
-  }
+  // try {
+  //   shortUrls = await getAllShortUrls();
+  // } catch (err) {
+  //   console.error(err);
+  //   message = "Something went wrong!";
+  // }
   res.render("index", {
-    shortUrls: shortUrls || [],
+    // shortUrls: shortUrls || [],
     message: message || req.flash("message"),
     prevData: { fullUrl: req.flash("fullUrl"), slug: req.flash("slug") },
   });
