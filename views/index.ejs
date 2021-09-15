@@ -67,21 +67,21 @@
               </tr>
             </thead>
             <tbody>
-              <% shortUrls.forEach(shortUrl => {%>
+              <%# shortUrls.forEach(shortUrl => {%>
               <tr>
                 <td>
-                  <a href="<%=shortUrl.fullUrl %>" target="_blank"
-                    ><%=shortUrl.fullUrl %></a
+                  <a href="<%#=shortUrl.fullUrl %>" target="_blank"
+                    ><%#=shortUrl.fullUrl %></a
                   >
                 </td>
                 <td>
-                  <a href="<%=shortUrl.shortUrl %>" target="_blank"
-                    ><%=shortUrl.shortUrl %></a
+                  <a href="<%#=shortUrl.shortUrl %>" target="_blank"
+                    ><%#=shortUrl.shortUrl %></a
                   >
                 </td>
-                <td><%=shortUrl.clicks %></td>
+                <td><%#=shortUrl.clicks %></td>
               </tr>
-              <% }) %>
+              <%# }) %>
             </tbody>
           </table>
         </div>
