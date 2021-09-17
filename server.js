@@ -44,6 +44,7 @@ const handleGetRequest = async (req, res) => {
     // shortUrls: shortUrls || [],
     message: message || req.flash("message"),
     prevData: { fullUrl: req.flash("fullUrl"), slug: req.flash("slug") },
+    shortUrl: "" || req.flash("shortUrl"),
   });
 };
 
@@ -94,9 +95,11 @@ const handleShortenRequest = async (req, res) => {
       slug,
     });
 
-    res.render("success", {
-      shortUrl: (process.env.hostURL || "") + createdShortUrl.shortUrl,
-    });
+    req.flash(
+      "shortUrl",
+      (process.env.hostURL || "") + createdShortUrl.shortUrl
+    );
+    res.redirect("/");
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
