@@ -15,6 +15,14 @@ const shortUrlScheme = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  createdOn: {
+    type: Date,
+    default: new Date(),
+  },
+  createdBy: {
+    type: String,
+    default: "anonymus",
+  },
 });
 
 module.exports = mongoose.model("ShortUrl", shortUrlScheme);
