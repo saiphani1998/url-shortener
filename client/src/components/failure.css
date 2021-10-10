@@ -1,0 +1,55 @@
+/* This CSS is built from: https://codepen.io/jagathish/pen/dBLWPK */
+
+.crossmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+  stroke-miterlimit: 10;
+  stroke: #ff0000;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.crossmark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #ff0000;
+  stroke-miterlimit: 10;
+  margin: 4% auto;
+  box-shadow: inset 0px 0px 0px #ff0000;
+  animation: fillred 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0.9s both;
+}
+
+.crossmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+.cross__path {
+  stroke: #ffffff;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  transform-origin: 50% 50% 0;
+}
+.cross__path--right {
+  animation: 1s ease 0.8s normal forwards 1 running stroke;
+}
+.cross__path--left {
+  animation: 1s ease 0.8s normal forwards 1 running stroke;
+}
+@keyframes fillred {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #ff0000;
+  }
+}
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

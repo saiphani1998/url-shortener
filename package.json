@@ -4,6 +4,7 @@
   "description": "URL Shortener developed by Sai Phani Krishna P",
   "main": "server.js",
   "scripts": {
+    "build": "cd client && npm install && npm run build --prod",
     "devStart": "nodemon server.js",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +24,7 @@
     "node": "12.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.12",
+    "cors": "^2.8.5"
   }
 }
