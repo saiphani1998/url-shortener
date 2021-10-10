@@ -17,14 +17,14 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "mongoose": "^5.13.7",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "cors": "^2.8.5"
   },
   "engines": {
     "npm": "6.14.5",
     "node": "12.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12",
-    "cors": "^2.8.5"
+    "nodemon": "^2.0.12"
   }
 }
